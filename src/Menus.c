@@ -1604,7 +1604,11 @@ static void TexturePackScreen_UploadCallback(const cc_string* path) {
 	EM_ASM_({ 
 		var name = UTF8ToString($0);;
 		var data = FS.readFile(name);
-		FS.writeFile('/texpacks/' + name.substring(1), data);
+		try {
+		    FS.unlink('/classicube/texpacks/custom.zip');
+		} catch(e) { }
+		FS.writeFile('/classicube/texpacks/custom.zip', data);
+		// NB: Don't Sync here it'll be triggered when the user switches to the texpack.
 	}, str);
 	TexturePackScreen_Show();
 	TexturePack_SetDefault(path);
